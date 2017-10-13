@@ -88,6 +88,12 @@ func main() {
 	}
 	add(ai)
 
+	dec, err := NewDecision()
+	if err != nil {
+		log.Fatal(err)
+	}
+	add(dec)
+
 	//
 	// Connect to the server.
 	//
@@ -171,8 +177,8 @@ type Msg struct {
 }
 
 type UserJoin struct {
-    user    string
-    channel string
+	user    string
+	channel string
 }
 
 func AcceptPRIVMSG(m *irc.Message) *Msg {
@@ -194,15 +200,15 @@ func AcceptPRIVMSG(m *irc.Message) *Msg {
 }
 
 func AcceptJoin(m *irc.Message) *UserJoin {
-    if m.Command != irc.JOIN {
-        return nil
-    }
-    join := &UserJoin{
-        user: m.Prefix.Name,
-    }
-    if strings.HasPrefix(m.Trailing, "#") {
-        join.channel = m.Trailing
-    }
+	if m.Command != irc.JOIN {
+		return nil
+	}
+	join := &UserJoin{
+		user: m.Prefix.Name,
+	}
+	if strings.HasPrefix(m.Trailing, "#") {
+		join.channel = m.Trailing
+	}
 
-    return join
+	return join
 }
